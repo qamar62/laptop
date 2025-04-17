@@ -7,7 +7,7 @@ import { FiCheckCircle, FiChevronRight, FiMail, FiPackage, FiPrinter } from 'rea
 import useCartStore from '@/store/useCartStore';
 
 const OrderConfirmationPage = () => {
-  const router = useRouter();
+  
   const { clearCart } = useCartStore();
   
   // Mock order data - in a real app, this would come from API or URL params

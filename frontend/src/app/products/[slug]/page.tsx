@@ -10,7 +10,12 @@ import useCartStore from '@/store/useCartStore';
 import { getProduct, getRelatedProducts } from '@/services/productService';
 import { useNotification } from '@/context/NotificationContext';
 
-export default function ProductDetailPage({ params }) {
+interface PageProps {
+  params: { slug: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+export default function ProductDetailPage({ params }: PageProps) {
   const router = useRouter();
   const { addItem, clearCart } = useCartStore();
   const { showNotification } = useNotification();

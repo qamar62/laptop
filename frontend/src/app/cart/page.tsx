@@ -8,7 +8,7 @@ import useCartStore from '@/store/useCartStore';
 import type { CartItem } from '@/types';
 
 // Helper function to safely format prices
-const formatPrice = (price: any): string => {
+const formatPrice = (price: number | string): string => {
   const numPrice = Number(price);
   return isNaN(numPrice) ? '0.00' : numPrice.toFixed(2);
 };
@@ -84,7 +84,7 @@ const CartPage = () => {
             <FiShoppingBag size={64} className="text-gray-300 dark:text-gray-600 transition-colors duration-200" />
           </div>
           <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white transition-colors duration-200">Your cart is empty</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 transition-colors duration-200">Looks like you haven't added anything to your cart yet.</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-8 transition-colors duration-200">Looks like you haven&apos;t added any items to your cart yet.</p>
           <Link href="/products" className="bg-cyan-600 hover:bg-cyan-700 dark:bg-cyan-700 dark:hover:bg-cyan-600 text-white px-6 py-3 rounded-md font-semibold transition-all duration-200 transform hover:scale-[1.02] hover:shadow-md inline-block border-b-4 border-cyan-800 dark:border-cyan-900 hover:border-b-2 hover:mb-[2px] active:border-b-0 active:mb-1 active:translate-y-1">
             Start Shopping
           </Link>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FiChevronRight, FiCreditCard, FiLock } from 'react-icons/fi';
+import { FiCreditCard, FiLock } from 'react-icons/fi';
 import useCartStore from '@/store/useCartStore';
 import useAuthStore from '@/store/useAuthStore';
 
@@ -36,10 +36,10 @@ const mockAddresses = [
 const CheckoutPage = () => {
   const router = useRouter();
   const { cart, items, fetchCart } = useCartStore();
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
   const [isClient, setIsClient] = useState(false);
   const [step, setStep] = useState(1);
-  const [addresses, setAddresses] = useState<any[]>([]);
+  const [addresses, setAddresses] = useState<{ id: string; name: string; street: string; city: string; state: string; postal_code: string; country: string; phone: string; is_default: boolean; }[]>([]);
   const [selectedShippingAddress, setSelectedShippingAddress] = useState('');
   const [selectedBillingAddress, setSelectedBillingAddress] = useState('');
   const [sameAsShipping, setSameAsShipping] = useState(true);
@@ -482,16 +482,13 @@ const CheckoutPage = () => {
                       <div className="font-medium text-right dark:text-white">Price</div>
                     </div>
                     
-                    {cart.items.map((item) => (
+                    {items.map((item) => (
                       <div key={item.id} className="border-b last:border-b-0 p-4">
                         <div className="md:grid md:grid-cols-4 md:gap-4 md:items-center">
                           <div className="flex items-center col-span-2 mb-2 md:mb-0">
                             <div className="w-16 h-16 bg-gray-100 rounded-md mr-4"></div>
                             <div>
-                              <p className="font-medium dark:text-white">{item.product.name}</p>
-                              {item.variant && (
-                                <p className="text-gray-500 dark:text-gray-400 text-sm">{item.variant.name}</p>
-                              )}
+                              <p className="font-medium dark:text-white">{item.name}</p>
                             </div>
                           </div>
                           
@@ -502,9 +499,7 @@ const CheckoutPage = () => {
                           
                           <div className="md:text-right">
                             <div className="md:hidden text-sm text-gray-500 mb-1 dark:text-gray-400">Price:</div>
-                            <span className="font-medium dark:text-white">${item.total_price.toFixed(2)}</span>
-                            <div className="md:hidden text-sm text-gray-500 mb-1">Price:</div>
-                            <span className="font-medium">${item.total_price.toFixed(2)}</span>
+                            <span className="font-medium dark:text-white">${(item.price * item.quantity).toFixed(2)}</span>
                           </div>
                         </div>
                       </div>

@@ -203,7 +203,7 @@ const AccountPage = () => {
                       <div className="flex items-center mb-4">
                         <div className="w-16 h-16 bg-gray-100 rounded-md mr-4"></div>
                         <div>
-                          <p className="font-medium">MacBook Pro 13"</p>
+                          <p className="font-medium">MacBook Pro 13&quot;</p>
                           <p className="text-gray-500 text-sm">Quantity: 1</p>
                         </div>
                       </div>
@@ -245,20 +245,6 @@ const AccountPage = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Empty state */}
-                {false && (
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                      <FiPackage className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <h3 className="text-lg font-medium mb-2">No orders yet</h3>
-                    <p className="text-gray-500 mb-4">When you place an order, it will appear here.</p>
-                    <Link href="/products" className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-                      Start Shopping
-                    </Link>
-                  </div>
-                )}
               </div>
             )}
 
@@ -273,7 +259,7 @@ const AccountPage = () => {
                     <div className="flex">
                       <div className="w-20 h-20 bg-gray-100 rounded-md mr-4"></div>
                       <div className="flex-1">
-                        <h3 className="font-medium">MacBook Pro 13"</h3>
+                        <h3 className="font-medium">MacBook Pro 13&quot;</h3>
                         <p className="text-blue-600 font-medium mb-2">$1,299.99</p>
                         <div className="flex space-x-2">
                           <button className="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
@@ -305,20 +291,6 @@ const AccountPage = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Empty state */}
-                {false && (
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                      <FiHeart className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <h3 className="text-lg font-medium mb-2">Your wishlist is empty</h3>
-                    <p className="text-gray-500 mb-4">Save items you're interested in for later.</p>
-                    <Link href="/products" className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-                      Browse Products
-                    </Link>
-                  </div>
-                )}
               </div>
             )}
 
@@ -367,20 +339,6 @@ const AccountPage = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Empty state */}
-                {false && (
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                      <FiCreditCard className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <h3 className="text-lg font-medium mb-2">No payment methods</h3>
-                    <p className="text-gray-500 mb-4">Add a payment method for faster checkout.</p>
-                    <button className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-                      Add Payment Method
-                    </button>
-                  </div>
-                )}
               </div>
             )}
 
@@ -435,20 +393,6 @@ const AccountPage = () => {
                     </div>
                   </div>
                 </div>
-                
-                {/* Empty state */}
-                {false && (
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-100 rounded-full mb-4">
-                      <FiMapPin className="w-8 h-8 text-gray-400" />
-                    </div>
-                    <h3 className="text-lg font-medium mb-2">No addresses saved</h3>
-                    <p className="text-gray-500 mb-4">Add an address for faster checkout.</p>
-                    <button className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-                      Add Address
-                    </button>
-                  </div>
-                )}
               </div>
             )}
 
