@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Black and white theme */
+  --background: #ffffff;
+  --foreground: #000000;
+  --card-bg: #ffffff;
+  --card-border: #e0e0e0;
+  
+  /* Accent color - Cyan */
+  --accent: #00CCFF;
+  --accent-hover: #00BBEE;
+  --accent-dark: #0099CC;
+  
+  /* Primary colors */
+  --primary: #000000;
+  --primary-hover: #333333;
+  --primary-foreground: #ffffff;
+  
+  /* Shadows for 3D effect */
+  --button-shadow: 0 4px 0 #000000;
+  --button-shadow-hover: 0 6px 0 #000000;
+  --button-shadow-active: 0 2px 0 #000000;
+  
+  /* Font settings */
+  --font-body: var(--font-montserrat);
+  --font-heading: var(--font-poppins);
+}
+
+.dark {
+  --background: #121212;
+  --foreground: #ffffff;
+  --card-bg: #1a1a1a;
+  --card-border: #333333;
+  
+  /* Accent color in dark mode */
+  --accent: #00CCFF;
+  --accent-hover: #33DDFF;
+  --accent-dark: #0099CC;
+  
+  /* Primary colors in dark mode */
+  --primary: #ffffff;
+  --primary-hover: #e0e0e0;
+  --primary-foreground: #000000;
+  
+  /* Shadows for 3D effect in dark mode */
+  --button-shadow: 0 4px 0 #333333;
+  --button-shadow-hover: 0 6px 0 #333333;
+  --button-shadow-active: 0 2px 0 #333333;
+}
+
+/* Apply smooth transition when switching themes */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  letter-spacing: 0.3px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Custom card styling */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styling */
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  box-shadow: var(--button-shadow);
+  transform: translateY(0);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--button-shadow-hover);
+}
+
+.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: var(--button-shadow-active);
+}
+
+/* Accent button */
+.btn-accent {
+  background-color: var(--accent);
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  box-shadow: 0 4px 0 var(--accent-dark);
+  transform: translateY(0);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--accent-dark);
+}
+
+.btn-accent:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 var(--accent-dark);
+}
+
+/* Hover effects for links */
+.hover-accent {
+  transition: color 0.2s ease;
+}
+
+.hover-accent:hover {
+  color: var(--accent);
+}
