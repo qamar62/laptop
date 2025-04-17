@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.10
+    container_name: laptop_traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/config:/etc/traefik/config:ro
+      - ./traefik/acme.json:/acme.json:rw
+    networks:
+      - laptop_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.laptop.qamdm.xyz`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$ruca84Hq$$mbjdMZpxBhuM4MMRn4dI30"  # admin:password
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: laptop_backend
+    restart: unless-stopped
+    volumes:
+      - ./backend:/app
+      - backend_static:/app/static_collected
+      - backend_media:/app/media
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=${DJANGO_SECRET_KEY}
+      - ALLOWED_HOSTS=backend.laptop.qamdm.xyz,laptop.qamdm.xyz
+      - DATABASE_URL=sqlite:////app/db.sqlite3
+    networks:
+      - laptop_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.rule=Host(`backend.laptop.qamdm.xyz`) || (Host(`laptop.qamdm.xyz`) && PathPrefix(`/api`, `/admin`, `/static/admin`, `/media`))"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend.loadbalancer.server.port=8000"
+      - "traefik.http.middlewares.backend-strip-api.stripprefix.prefixes=/api"
+      - "traefik.http.routers.backend-api.rule=Host(`laptop.qamdm.xyz`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend-api.middlewares=backend-strip-api"
+      - "traefik.http.routers.backend-api.service=backend"
+      - "traefik.http.routers.backend-api.entrypoints=websecure"
+      - "traefik.http.routers.backend-api.tls.certresolver=letsencrypt"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: laptop_frontend
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_API_URL=https://laptop.qamdm.xyz/api
+    networks:
+      - laptop_network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.rule=Host(`laptop.qamdm.xyz`) && !PathPrefix(`/api`, `/admin`, `/static/admin`, `/media`)"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+
+networks:
+  laptop_network:
+    name: laptop_network
+    driver: bridge
+
+volumes:
+  backend_static:
+  backend_media:
