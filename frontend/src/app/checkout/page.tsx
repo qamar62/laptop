@@ -35,7 +35,7 @@ const mockAddresses = [
 
 const CheckoutPage = () => {
   const router = useRouter();
-  const { cart, fetchCart } = useCartStore();
+  const { cart, items, fetchCart } = useCartStore();
   const { isAuthenticated, user } = useAuthStore();
   const [isClient, setIsClient] = useState(false);
   const [step, setStep] = useState(1);
@@ -86,8 +86,8 @@ const CheckoutPage = () => {
   }, [isClient, isAuthenticated, router]);
 
   const calculateSubtotal = () => {
-    if (!cart || !cart.items || cart.items.length === 0) return 0;
-    return cart.items.reduce((total, item) => total + item.total_price, 0);
+    if (!items || items.length === 0) return 0;
+    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
   const calculateShipping = () => {
@@ -131,7 +131,7 @@ const CheckoutPage = () => {
     return null; // Don't render anything until client-side and authenticated
   }
 
-  if (!cart || !cart.items || cart.items.length === 0) {
+  if (!items || items.length === 0) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-3xl font-bold mb-4">Your cart is empty</h1>
