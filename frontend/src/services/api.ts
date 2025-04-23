@@ -1,11 +1,12 @@
 import axios from 'axios';
 
 // Create an axios instance with default config
-// Extract the base URL without the /api/v1 part
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.split('/v1')[0] : '';
+// Extract just the domain part (without any paths)
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? 
+  process.env.NEXT_PUBLIC_API_URL.replace(/(\/api\/v1|\/api).*$/, '') : '';
 
 const api = axios.create({
-  baseURL: apiBaseUrl ? `${apiBaseUrl}/api` : '',
+  baseURL: apiBaseUrl ? `${apiBaseUrl}/api/v1` : '',
   headers: {
     'Content-Type': 'application/json',
   },

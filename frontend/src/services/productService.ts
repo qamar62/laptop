@@ -138,8 +138,9 @@ const mockBrands: Brand[] = [
 export const getProducts = async (params?: Record<string, any>): Promise<Product[]> => {
   try {
     // Create a modified API instance without auth headers for public endpoints
-    // Extract the base URL without the /api/v1 part
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.split('/api/v1')[0] : '';
+    // Extract just the domain part (without any paths)
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? 
+      process.env.NEXT_PUBLIC_API_URL.replace(/(\/api\/v1|\/api).*$/, '') : '';
     
     const publicApi = axios.create({
       baseURL: apiBaseUrl ? `${apiBaseUrl}/api/v1` : '',
@@ -167,7 +168,7 @@ export const getProducts = async (params?: Record<string, any>): Promise<Product
 
 export const getProduct = async (slug: string): Promise<Product> => {
   try {
-    const response = await api.get(`/v1/products/products/${slug}/`);
+    const response = await api.get(`/products/products/${slug}/`);
     if (response.data) {
       console.log(`Successfully fetched product ${slug} from backend`);
       return response.data as Product;
@@ -186,8 +187,9 @@ export const getProduct = async (slug: string): Promise<Product> => {
 export const getCategories = async (): Promise<Category[]> => {
   try {
     // Create a modified API instance without auth headers for public endpoints
-    // Extract the base URL without the /api/v1 part
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.split('/api/v1')[0] : '';
+    // Extract just the domain part (without any paths)
+    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? 
+      process.env.NEXT_PUBLIC_API_URL.replace(/(\/api\/v1|\/api).*$/, '') : '';
     
     const publicApi = axios.create({
       baseURL: apiBaseUrl ? `${apiBaseUrl}/api/v1` : '',
@@ -213,7 +215,7 @@ export const getCategories = async (): Promise<Category[]> => {
 
 export const getBrands = async (): Promise<Brand[]> => {
   try {
-    const response = await api.get<PaginatedResponse<Brand>>('/v1/products/brands/');
+    const response = await api.get<PaginatedResponse<Brand>>('/products/brands/');
     if (response.data && response.data.results) {
       console.log(`Successfully fetched ${response.data.results.length} brands from backend`);
       return response.data.results;
@@ -230,7 +232,7 @@ export const getBrands = async (): Promise<Brand[]> => {
 
 export const getRelatedProducts = async (productId: string): Promise<Product[]> => {
   try {
-    const response = await api.get(`/v1/products/products/${productId}/related/`);
+    const response = await api.get(`/products/products/${productId}/related/`);
     if (response.data && Array.isArray(response.data)) {
       console.log(`Successfully fetched ${response.data.length} related products from backend`);
       return response.data as Product[];
