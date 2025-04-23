@@ -39,8 +39,17 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-black dark:text-white font-heading">
-            Laptop <span className="text-accent">Store</span>
+          <Link href="/" className="relative group">
+            <div className="text-4xl font-extrabold tracking-wider font-heading">
+              <span className="inline-block relative text-black dark:text-white
+                             before:content-['NC'] before:absolute before:inset-0 before:text-accent
+                             before:animate-pulse before:blur-[2px] before:opacity-70
+                             after:content-['NC'] after:absolute after:inset-0 after:text-black dark:after:text-white
+                             after:animate-pulse after:blur-[1px] after:opacity-90">
+                NC
+              </span>
+            </div>
+            <div className="absolute -bottom-1 left-0 w-0 h-1 bg-accent transition-all duration-300 group-hover:w-full"></div>
           </Link>
 
           {/* Desktop Navigation */}
