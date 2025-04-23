@@ -44,7 +44,7 @@ services:
       - laptop_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static/admin`) || PathPrefix(`/media`))"
+      - "traefik.http.routers.backend.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`))"
       - "traefik.http.routers.backend.entrypoints=web,websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
