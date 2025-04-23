@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   traefik:
@@ -8,8 +7,8 @@ services:
     security_opt:
       - no-new-privileges:true
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -38,26 +37,17 @@ services:
     environment:
       - DEBUG=False
       - SECRET_KEY=${DJANGO_SECRET_KEY}
-      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - ALLOWED_HOSTS=localhost,127.0.0.1,laptop.qamdm.xyz,laptop.qamdm.xyz
       - DATABASE_URL=sqlite:////app/db.sqlite3
     networks:
       - laptop_network
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static/admin`) || PathPrefix(`/media`))"
       - "traefik.http.routers.backend.entrypoints=web"
-      - "traefik.http.routers.backend.rule=PathPrefix(`/api`, `/admin`, `/static/admin`, `/media`)"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
       - "traefik.http.services.backend.loadbalancer.server.port=8000"
-      - "traefik.http.middlewares.backend-strip-api.stripprefix.prefixes=/api"
-      - "traefik.http.routers.backend-api.rule=PathPrefix(`/api`)"
-      - "traefik.http.routers.backend-api.middlewares=backend-strip-api"
-      - "traefik.http.routers.backend-api.service=backend"
-      - "traefik.http.routers.backend-api.entrypoints=web"
-      # --- Traefik router for Django admin and static/media on laptop.qamdm.xyz ---
-      - "traefik.http.routers.backend-public.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/admin`) || PathPrefix(`/static/admin`) || PathPrefix(`/media`))"
-      - "traefik.http.routers.backend-public.entrypoints=web"
-      - "traefik.http.routers.backend-public.tls=true"
-      - "traefik.http.routers.backend-public.tls.certresolver=letsencrypt"
-      - "traefik.http.services.backend-public.loadbalancer.server.port=8000"
 
   frontend:
     build:
@@ -71,15 +61,11 @@ services:
       - laptop_network
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=Host(`laptop.qamdm.xyz`) && !PathPrefix(`/api`, `/admin`, `/static/admin`, `/media`)"
       - "traefik.http.routers.frontend.entrypoints=web"
-      - "traefik.http.routers.frontend.rule=!PathPrefix(`/api`, `/admin`, `/static/admin`, `/media`)"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
-      # --- Traefik router for laptop.qamdm.xyz ---
-      - "traefik.http.routers.frontend-public.rule=Host(`laptop.qamdm.xyz`)"
-      - "traefik.http.routers.frontend-public.entrypoints=web"
-      - "traefik.http.routers.frontend-public.tls=true"
-      - "traefik.http.routers.frontend-public.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend-public.loadbalancer.server.port=3000"
 
 networks:
   laptop_network:
