@@ -1,8 +1,11 @@
 import axios from 'axios';
 
 // Create an axios instance with default config
+// Extract the base URL without the /api/v1 part
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.split('/api/v1')[0] : '';
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: apiBaseUrl ? `${apiBaseUrl}/api` : '',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -45,7 +48,7 @@ api.interceptors.response.use(
         originalRequest._retry = true;
         
         try {
-          const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/users/token/refresh/`, {
+          const response = await axios.post(`${apiBaseUrl}/api/v1/users/token/refresh/`, {
             refresh: refreshToken,
           });
           
