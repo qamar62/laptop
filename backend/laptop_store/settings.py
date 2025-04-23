@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ova=3qjp6x_m$=##_+c=53@koqnk64+%c0pu-5=y@*avg7hl6=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'laptop.qamdm.xyz']
 
 
 # Application definition
