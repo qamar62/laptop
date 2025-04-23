@@ -45,10 +45,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'drf_yasg',
     'django_filters',
-    'import_export',
-    'mptt',
-    'countries',
-    'debug_toolbar',
     
     # Custom apps
     'users',
@@ -67,7 +63,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar (only active when DEBUG=True)
 ]
 
 ROOT_URLCONF = 'laptop_store.urls'
@@ -188,14 +183,9 @@ ADMIN_SITE_HEADER = "Laptop Store Admin"
 ADMIN_SITE_TITLE = "Laptop Store Admin Portal"
 ADMIN_INDEX_TITLE = "Welcome to Laptop Store Admin"
 
-# Django Debug Toolbar settings
-INTERNAL_IPS = ['127.0.0.1']
-DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
-}
 
-# Django Import-Export settings
-IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+
 
 # E-commerce specific settings
 PRODUCT_IMAGE_WIDTH = 800
