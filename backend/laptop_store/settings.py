@@ -31,8 +31,9 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'laptop.qamdm.xyz']
 # Application definition
 
 INSTALLED_APPS = [
-    # Django Jet admin theme
-    'jet',
+    # Admin Interface theme
+    'admin_interface',
+    'colorfield',
     
     # Django default apps
     'django.contrib.admin',
@@ -186,32 +187,9 @@ STRIPE_PUBLIC_KEY = ''  # Add your key in production
 STRIPE_SECRET_KEY = ''  # Add your key in production
 STRIPE_WEBHOOK_SECRET = ''  # Add your key in production
 
-# Django Jet settings
-JET_DEFAULT_THEME = 'light-blue'
-JET_THEMES = [
-    {
-        'theme': 'default',
-        'color': '#47bac1',
-        'title': 'Default'
-    },
-    {
-        'theme': 'green',
-        'color': '#44b78b',
-        'title': 'Green'
-    },
-    {
-        'theme': 'light-green',
-        'color': '#2faa60',
-        'title': 'Light Green'
-    },
-    {
-        'theme': 'light-blue',
-        'color': '#5EADDE',
-        'title': 'Light Blue'
-    },
-]
-JET_SIDE_MENU_COMPACT = True
-JET_CHANGE_FORM_SIBLING_LINKS = True
+# Admin Interface settings
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+SILENCED_SYSTEM_CHECKS = ['security.W019']
 
 # Django Debug Toolbar settings
 INTERNAL_IPS = ['127.0.0.1']
