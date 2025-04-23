@@ -52,6 +52,12 @@ services:
       - "traefik.http.routers.backend-api.middlewares=backend-strip-api"
       - "traefik.http.routers.backend-api.service=backend"
       - "traefik.http.routers.backend-api.entrypoints=web"
+      # --- Traefik router for Django admin and static/media on laptop.qamdm.xyz ---
+      - "traefik.http.routers.backend-public.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/admin`) || PathPrefix(`/static/admin`) || PathPrefix(`/media`))"
+      - "traefik.http.routers.backend-public.entrypoints=web"
+      - "traefik.http.routers.backend-public.tls=true"
+      - "traefik.http.routers.backend-public.tls.certresolver=letsencrypt"
+      - "traefik.http.services.backend-public.loadbalancer.server.port=8000"
 
   frontend:
     build:
@@ -68,6 +74,12 @@ services:
       - "traefik.http.routers.frontend.entrypoints=web"
       - "traefik.http.routers.frontend.rule=!PathPrefix(`/api`, `/admin`, `/static/admin`, `/media`)"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      # --- Traefik router for laptop.qamdm.xyz ---
+      - "traefik.http.routers.frontend-public.rule=Host(`laptop.qamdm.xyz`)"
+      - "traefik.http.routers.frontend-public.entrypoints=web"
+      - "traefik.http.routers.frontend-public.tls=true"
+      - "traefik.http.routers.frontend-public.tls.certresolver=letsencrypt"
+      - "traefik.http.services.frontend-public.loadbalancer.server.port=3000"
 
 networks:
   laptop_network:
