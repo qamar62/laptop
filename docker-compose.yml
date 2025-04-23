@@ -19,7 +19,7 @@ services:
       - laptop_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.entrypoints=web,websecure"
       - "traefik.http.routers.traefik.rule=PathPrefix(`/api`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$ruca84Hq$$mbjdMZpxBhuM4MMRn4dI30"  # admin:password
@@ -45,9 +45,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static/admin`) || PathPrefix(`/media`))"
-      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.routers.backend.entrypoints=web,websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.backend.priority=2"
       - "traefik.http.services.backend.loadbalancer.server.port=8000"
 
   frontend:
@@ -57,15 +58,16 @@ services:
     container_name: laptop_frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8080/api
+      - NEXT_PUBLIC_API_URL=https://laptop.qamdm.xyz/api
     networks:
       - laptop_network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`laptop.qamdm.xyz`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.entrypoints=web,websecure"
       - "traefik.http.routers.frontend.tls=true"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.frontend.priority=1"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
 
 networks:
