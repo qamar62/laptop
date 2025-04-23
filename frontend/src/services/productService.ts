@@ -139,7 +139,7 @@ export const getProducts = async (params?: Record<string, any>): Promise<Product
   try {
     // Create a modified API instance without auth headers for public endpoints
     const publicApi = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
+      baseURL: process.env.NEXT_PUBLIC_API_URL,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -184,7 +184,7 @@ export const getCategories = async (): Promise<Category[]> => {
   try {
     // Create a modified API instance without auth headers for public endpoints
     const publicApi = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
+      baseURL: process.env.NEXT_PUBLIC_API_URL,
       headers: {
         'Content-Type': 'application/json',
       },
