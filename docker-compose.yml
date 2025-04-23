@@ -58,7 +58,7 @@ services:
     container_name: laptop_frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=https://laptop.qamdm.xyz/api
+      - NEXT_PUBLIC_API_URL=https://laptop.qamdm.xyz/api/v1
     networks:
       - laptop_network
     labels:
