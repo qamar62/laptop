@@ -31,8 +31,8 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'laptop.qamdm.xyz']
 # Application definition
 
 INSTALLED_APPS = [
-    # Django Jazzmin admin theme
-    'jazzmin',
+    # Django Jet admin theme
+    'jet',
     
     # Django default apps
     'django.contrib.admin',
@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'drf_yasg',
+    'django_filters',
+    'import_export',
+    'mptt',
+    'countries',
+    'debug_toolbar',
     
     # Custom apps
     'users',
@@ -57,6 +62,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Whitenoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar (only active when DEBUG=True)
 ]
 
 ROOT_URLCONF = 'laptop_store.urls'
@@ -134,8 +141,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static_collected'
 
-# Add whitenoise for serving static files in production
-MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+# Whitenoise settings for serving static files in production
 WHITENOISE_USE_FINDERS = False
 WHITENOISE_AUTOREFRESH = DEBUG
 
@@ -157,6 +163,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,  # Increased page size to show more products
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
 }
 
 # Media files
@@ -175,149 +186,45 @@ STRIPE_PUBLIC_KEY = ''  # Add your key in production
 STRIPE_SECRET_KEY = ''  # Add your key in production
 STRIPE_WEBHOOK_SECRET = ''  # Add your key in production
 
-# Django Jazzmin settings for multi-company support
-JAZZMIN_SETTINGS = {
-    # Title on the login screen (19 chars max)
-    "site_title": "Laptop Store Admin",
-    
-    # Title on the brand (19 chars max)
-    "site_header": "Laptop Store",
-    
-    # Logo to use for your site, must be present in static files
-    "site_logo": "images/logo.png",
-    
-    # Logo to use for login form in dark theme
-    "login_logo": "images/login_logo.png",
-    
-    # CSS classes that are applied to the logo
-    "site_logo_classes": "img-circle",
-    
-    # Relative path to a favicon for your site
-    "site_icon": "images/favicon.png",
-    
-    # Welcome text on the login screen
-    "welcome_sign": "Welcome to Laptop Store Admin",
-    
-    # Copyright on the footer
-    "copyright": "Laptop Store Ltd",
-    
-    # List of model admins to search from the search bar
-    "search_model": ["users.CustomUser", "products.Product"],
-    
-    # Field name on user model that contains avatar ImageField/URLField/Charfield
-    "user_avatar": "profile_picture",
-    
-    ############
-    # Top Menu #
-    ############
-    # Links to put along the top menu
-    "topmenu_links": [
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        
-        # External url that opens in a new window (Permissions can be added)
-        {"name": "Store Front", "url": "http://localhost:3000", "new_window": True},
-        
-        # Model admin to link to (Permissions checked against model)
-        {"model": "users.CustomUser"},
-        
-        # App with dropdown menu to all its models pages
-        {"app": "products"},
-        
-        # Separator for the dropdown menu
-        {"app": "orders"},
-    ],
-    
-    #############
-    # Side Menu #
-    #############
-    # Whether to display the side menu
-    "show_sidebar": True,
-    
-    # Whether to aut expand the menu
-    "navigation_expanded": True,
-    
-    # Custom icons for side menu apps/models
-    "icons": {
-        "users": "fas fa-users-cog",
-        "users.customuser": "fas fa-user",
-        "users.address": "fas fa-address-card",
-        "products.category": "fas fa-list",
-        "products.product": "fas fa-laptop",
-        "products.brand": "fas fa-building",
-        "products.review": "fas fa-star",
-        "orders.order": "fas fa-shopping-cart",
-        "orders.orderitem": "fas fa-box",
-        "cart.cart": "fas fa-shopping-basket",
-        "cart.cartitem": "fas fa-shopping-bag",
+# Django Jet settings
+JET_DEFAULT_THEME = 'light-blue'
+JET_THEMES = [
+    {
+        'theme': 'default',
+        'color': '#47bac1',
+        'title': 'Default'
     },
-    
-    # Icons that are used when one is not manually specified
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    
-    #################
-    # Related Modal #
-    #################
-    # Use modals instead of popups
-    "related_modal_active": True,
-    
-    #############
-    # UI Tweaks #
-    #############
-    # Relative paths to custom CSS/JS scripts (must be present in static files)
-    "custom_css": None,
-    "custom_js": None,
-    
-    # Whether to show the UI customizer on the sidebar
-    "show_ui_builder": True,
-    
-    ###############
-    # Change view #
-    ###############
-    # Render out the change view as a single form, or in tabs
-    "changeform_format": "horizontal_tabs",
-    
-    # Override change forms on a per modeladmin basis
-    "changeform_format_overrides": {
-        "users.customuser": "collapsible",
-        "products.product": "vertical_tabs",
+    {
+        'theme': 'green',
+        'color': '#44b78b',
+        'title': 'Green'
     },
-    
-    # Add a language dropdown into the admin
-    "language_chooser": False,
+    {
+        'theme': 'light-green',
+        'color': '#2faa60',
+        'title': 'Light Green'
+    },
+    {
+        'theme': 'light-blue',
+        'color': '#5EADDE',
+        'title': 'Light Blue'
+    },
+]
+JET_SIDE_MENU_COMPACT = True
+JET_CHANGE_FORM_SIBLING_LINKS = True
+
+# Django Debug Toolbar settings
+INTERNAL_IPS = ['127.0.0.1']
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
 }
 
-# Jazzmin UI Customizer settings
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-primary",
-    "accent": "accent-primary",
-    "navbar": "navbar-dark",
-    "no_navbar_border": False,
-    "navbar_fixed": True,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "default",
-    "dark_mode_theme": "darkly",
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success"
-    }
-}
+# Django Import-Export settings
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+# E-commerce specific settings
+PRODUCT_IMAGE_WIDTH = 800
+PRODUCT_IMAGE_HEIGHT = 600
+PRODUCT_THUMBNAIL_WIDTH = 300
+PRODUCT_THUMBNAIL_HEIGHT = 300
 STATIC_ROOT = BASE_DIR / "static_collected"
