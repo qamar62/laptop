@@ -145,7 +145,7 @@ export const getProducts = async (params?: Record<string, any>): Promise<Product
       },
     });
     
-    const response = await publicApi.get<PaginatedResponse<Product>>('/products/products/', { params });
+    const response = await publicApi.get<PaginatedResponse<Product>>('products/products/', { params });
     // Check if we have results in the response
     if (response.data && response.data.results && response.data.results.length > 0) {
       console.log(`Successfully fetched ${response.data.results.length} products from backend`);
@@ -164,7 +164,7 @@ export const getProducts = async (params?: Record<string, any>): Promise<Product
 
 export const getProduct = async (slug: string): Promise<Product> => {
   try {
-    const response = await api.get(`/products/products/${slug}/`);
+    const response = await api.get(`products/products/${slug}/`);
     if (response.data) {
       console.log(`Successfully fetched product ${slug} from backend`);
       return response.data as Product;
@@ -190,7 +190,7 @@ export const getCategories = async (): Promise<Category[]> => {
       },
     });
     
-    const response = await publicApi.get<PaginatedResponse<Category>>('/products/categories/');
+    const response = await publicApi.get<PaginatedResponse<Category>>('products/categories/');
     if (response.data && response.data.results) {
       console.log(`Successfully fetched ${response.data.results.length} categories from backend`);
       return response.data.results;
@@ -207,7 +207,7 @@ export const getCategories = async (): Promise<Category[]> => {
 
 export const getBrands = async (): Promise<Brand[]> => {
   try {
-    const response = await api.get<PaginatedResponse<Brand>>('/products/brands/');
+    const response = await api.get<PaginatedResponse<Brand>>('products/brands/');
     if (response.data && response.data.results) {
       console.log(`Successfully fetched ${response.data.results.length} brands from backend`);
       return response.data.results;
@@ -224,7 +224,7 @@ export const getBrands = async (): Promise<Brand[]> => {
 
 export const getRelatedProducts = async (productId: string): Promise<Product[]> => {
   try {
-    const response = await api.get(`/products/products/${productId}/related/`);
+    const response = await api.get(`products/products/${productId}/related/`);
     if (response.data && Array.isArray(response.data)) {
       console.log(`Successfully fetched ${response.data.length} related products from backend`);
       return response.data as Product[];
