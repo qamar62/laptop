@@ -31,10 +31,6 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'laptop.qamdm.xyz']
 # Application definition
 
 INSTALLED_APPS = [
-    # Admin Interface theme
-    'admin_interface',
-    'colorfield',
-    
     # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -187,9 +183,10 @@ STRIPE_PUBLIC_KEY = ''  # Add your key in production
 STRIPE_SECRET_KEY = ''  # Add your key in production
 STRIPE_WEBHOOK_SECRET = ''  # Add your key in production
 
-# Admin Interface settings
-X_FRAME_OPTIONS = 'SAMEORIGIN'
-SILENCED_SYSTEM_CHECKS = ['security.W019']
+# Admin settings
+ADMIN_SITE_HEADER = "Laptop Store Admin"
+ADMIN_SITE_TITLE = "Laptop Store Admin Portal"
+ADMIN_INDEX_TITLE = "Welcome to Laptop Store Admin"
 
 # Django Debug Toolbar settings
 INTERNAL_IPS = ['127.0.0.1']
