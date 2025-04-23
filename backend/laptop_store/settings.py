@@ -161,6 +161,9 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CORS_ALLOW_ALL_ORIGINS = True  # For development only, restrict in production
 CORS_ALLOW_CREDENTIALS = True
 
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = ['https://laptop.qamdm.xyz', 'http://laptop.qamdm.xyz']
+
 # Stripe settings (add your keys in production)
 STRIPE_PUBLIC_KEY = ''  # Add your key in production
 STRIPE_SECRET_KEY = ''  # Add your key in production
