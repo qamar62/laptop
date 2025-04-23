@@ -7,4 +7,4 @@ drf-yasg==1.21.7
 gunicorn==21.2.0
 Pillow==10.2.0
 whitenoise==6.6.0
-django_filters==22.1
+django_filters
