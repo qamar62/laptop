@@ -9,7 +9,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      # Comment out or restrict access to dashboard port for production
+      - "127.0.0.1:8080:8080"  # Only accessible locally
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
@@ -20,7 +21,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.entrypoints=web,websecure"
-      - "traefik.http.routers.traefik.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.eshop.qamdm.xyz`) || PathPrefix(`/api`)"
       - "traefik.http.routers.traefik.service=api@internal"
       - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$ruca84Hq$$mbjdMZpxBhuM4MMRn4dI30"  # admin:password
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
@@ -38,7 +39,8 @@ services:
     environment:
       - DEBUG=False
       - SECRET_KEY=${DJANGO_SECRET_KEY}
-      - ALLOWED_HOSTS=localhost,127.0.0.1,eshop.qamdm.xyz,eshop.qamdm.xyz
+      - ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.69,eshop.qamdm.xyz
+      - CSRF_TRUSTED_ORIGINS=https://eshop.qamdm.xyz
       - DATABASE_URL=sqlite:////app/db.sqlite3
     networks:
       - laptop_network
@@ -69,6 +71,9 @@ services:
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
       - "traefik.http.routers.frontend.priority=1"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
+      
+  # Cloudflared tunnel is running on the Proxmox host
+  # No need for a cloudflared service in docker-compose
 
 networks:
   laptop_network:
