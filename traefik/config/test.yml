@@ -1,0 +1,14 @@
+http:
+  routers:
+    test:
+      rule: "Host(`eshop.qamdm.xyz`) && Path(`/test`)"
+      service: "test"
+      entryPoints:
+        - "web"
+  
+  services:
+    test:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:80"
+        passHostHeader: true

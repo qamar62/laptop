@@ -9,13 +9,15 @@ entryPoints:
   websecure:
     address: ":443"
 
-certificatesResolvers:
-  letsencrypt:
-    acme:
-      email: admin@laptop.qamdm.xyz
-      storage: acme.json
-      httpChallenge:
-        entryPoint: web
+# Since we're using Cloudflare tunnel, we don't need ACME certificate resolver
+# Commenting out to avoid errors
+#certificatesResolvers:
+#  letsencrypt:
+#    acme:
+#      email: admin@laptop.qamdm.xyz
+#      storage: acme.json
+#      httpChallenge:
+#        entryPoint: web
 
 providers:
   docker:

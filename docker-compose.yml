@@ -47,7 +47,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`eshop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`))"
       - "traefik.http.routers.backend.entrypoints=web"
-      # Removing TLS config as Cloudflare tunnel handles encryption
+      # No TLS config as Cloudflare tunnel handles encryption
       - "traefik.http.routers.backend.priority=2"
       - "traefik.http.services.backend.loadbalancer.server.port=8000"
 
@@ -65,7 +65,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`eshop.qamdm.xyz`)"
       - "traefik.http.routers.frontend.entrypoints=web"
-      # Removing TLS config as Cloudflare tunnel handles encryption
+      # No TLS config as Cloudflare tunnel handles encryption
       - "traefik.http.routers.frontend.priority=1"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
       
