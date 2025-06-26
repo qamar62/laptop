@@ -38,13 +38,13 @@ services:
     environment:
       - DEBUG=False
       - SECRET_KEY=${DJANGO_SECRET_KEY}
-      - ALLOWED_HOSTS=localhost,127.0.0.1,laptop.qamdm.xyz,laptop.qamdm.xyz
+      - ALLOWED_HOSTS=localhost,127.0.0.1,eshop.qamdm.xyz,eshop.qamdm.xyz
       - DATABASE_URL=sqlite:////app/db.sqlite3
     networks:
       - laptop_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`laptop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`))"
+      - "traefik.http.routers.backend.rule=Host(`eshop.qamdm.xyz`) && (PathPrefix(`/api`) || PathPrefix(`/admin`) || PathPrefix(`/static`) || PathPrefix(`/media`))"
       - "traefik.http.routers.backend.entrypoints=web,websecure"
       - "traefik.http.routers.backend.tls=true"
       - "traefik.http.routers.backend.tls.certresolver=letsencrypt"
@@ -58,12 +58,12 @@ services:
     container_name: laptop_frontend
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_API_URL=https://laptop.qamdm.xyz/api/v1
+      - NEXT_PUBLIC_API_URL=https://eshop.qamdm.xyz/api/v1
     networks:
       - laptop_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.frontend.rule=Host(`laptop.qamdm.xyz`)"
+      - "traefik.http.routers.frontend.rule=Host(`eshop.qamdm.xyz`)"
       - "traefik.http.routers.frontend.entrypoints=web,websecure"
       - "traefik.http.routers.frontend.tls=true"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
