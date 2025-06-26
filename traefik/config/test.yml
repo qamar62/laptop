@@ -10,5 +10,5 @@ http:
     test:
       loadBalancer:
         servers:
-          - url: "http://localhost:80"
+          - url: "http://laptop_frontend:3000"
         passHostHeader: true
